@@ -26,6 +26,7 @@ class Collection extends BaseCollection
         $details=[];
         foreach ($this->items as $item){
             $details[] = [
+                'id' => $item->getKey(),
                 'value' => $item->value,
                 'label' => $item->label,
                 'sort_order' => $item->sort_order,
