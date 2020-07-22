@@ -6,6 +6,12 @@ use DB;
 use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * Class Entity
+ *
+ * @property string $entity_class sting model path
+ * @package Eav
+ */
 class Entity extends Model
 {
     /**
