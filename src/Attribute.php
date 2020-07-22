@@ -2,6 +2,7 @@
 
 namespace Eav;
 
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use ReflectionException;
 use Eav\Attribute\Concerns;
 use Eav\Attribute\Collection;
@@ -31,7 +32,8 @@ class Attribute extends Model
         'backend_table', 'frontend_class', 'frontend_type',
         'frontend_label', 'source_class',  'default_value',
         'is_filterable', 'is_searchable',  'is_required',
-        'required_validate_class', 'entity_id'
+        'required_validate_class', 'entity_id', 'owner_id',
+        'description'
     ];
 
     /**
@@ -285,7 +287,7 @@ class Attribute extends Model
         
         $options = [];
         
-        if ($data['frontend_type'] == 'select' && empty($data['source_class'])) {
+        if ($data['frontend_type'] === 'select' && empty($data['source_class'])) {
             if (isset($data['options'])) {
                 $options = $data['options'];
                 unset($data['options']);
@@ -609,5 +611,33 @@ class Attribute extends Model
         return collect($entityIds)->map(function ($entityId) use ($value) {
             return $this->updateAttribute($value, $entityId);
         });
+    }
+
+    /**
+     * The person who created the attribute
+     * Must be a valid class
+     */
+    public function owner(){
+        return  $this->belongsTo(config('eav.owner.model'),'owner_id');
+    }
+
+    /**
+     * The attribute description
+     *
+     * @return string
+     */
+    public function getDescription()
+    {
+        return $this->getAttribute('description');
+    }
+
+    /**
+     * getDescription alias
+     *
+     * @return string
+     */
+    public function description()
+    {
+        return $this->getDescription();
     }
 }
