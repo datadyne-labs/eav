@@ -74,6 +74,11 @@ abstract class Model extends Eloquent
         return $eavEntity;
     }
 
+    public function entityCode(){
+        return static::ENTITY;
+    }
+
+
     /**
      * Get the Entity ID related to the model.
      *

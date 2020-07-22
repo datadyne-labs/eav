@@ -99,9 +99,11 @@ Route::post('/entities/{entityCode}/attributes/map', [ 'as' => 'attribute.map', 
 |
 */
 
-Route::get('/{entityCode}/{id}/attributes/values', [ 'as' => 'attribute.values.list', 'uses' => 'AttributeValueController@list']);
+Route::get('/{entityCode}/attributes/values', [ 'as' => 'attribute.values.list', 'uses' => 'EntityAttributeValuesController@list']);
 
-Route::get('/{entityCode}/{id}/attributes/values/{attrCode}', [ 'as' => 'attribute.get.value', 'uses' => 'AttributeValueController@get']);
+Route::get('/{entityCode}/{id}/attributes/values', [ 'as' => 'attribute.values.list', 'uses' => 'EntityAttributeValueController@list']);
+
+Route::get('/{entityCode}/{id}/attributes/values/{attrCode}', [ 'as' => 'attribute.get.value', 'uses' => 'EntityAttributeValueController@get']);
 
 
 /*
