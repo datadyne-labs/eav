@@ -485,7 +485,9 @@ class Attribute extends Model
     {
         if ($this->dataTable === null) {
             $backendTable = trim($this->getAttribute('backend_table'));
-            if (empty($backendTable)) {
+            if (empty($backendTable) && config('eav.database.combineTables')) {
+                $backendTable  = config('eav.database.combineTablePrefix').'_'.strtolower($this->getAttribute('backend_type'));
+            }elseif (empty($backendTable)){
                 $backendTable  = $this->entity()->code().'_'.strtolower($this->getAttribute('backend_type'));
             }
             $this->dataTable = $backendTable;
