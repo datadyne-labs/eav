@@ -18,9 +18,24 @@ class AttributeOptions extends Resource
             'type'          => 'attribute_options',
             'id'            => (string) $this->getKey(),
             'attributes'    => [
-                'label'         => $this->label,
-                'value'   => $this->value,
-            ]
+                'attribute_code' => $this->code(),
+                'entity_code' =>  $request->route('code'),
+                'backend_class' =>  $this->backend_class,
+                'backend_type' =>  $this->backend_type,
+                'backend_table' =>   $this->backend_table,
+                'frontend_class' =>   $this->frontend_class,
+                'frontend_type' =>  $this->frontend_type,
+                'frontend_label' =>  $this->frontend_label,
+                'source_class' =>  $this->source_class,
+                'default_value' =>  $this->default_value,
+                'is_required' =>  $this->is_required,
+                'is_filterable' =>  $this->is_filterable,
+                'is_searchable' =>  $this->is_searchable,
+                'required_validate_class' =>   $this->required_validate_class,
+                'sequence' => $this->when(!is_null($this->sequence), $this->sequence),
+                'owner' => $this->owner,
+            ],
+            'options' => $this->optionDetails()
         ];
     }
 }

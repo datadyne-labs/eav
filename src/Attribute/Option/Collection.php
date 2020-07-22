@@ -4,6 +4,7 @@ namespace Eav\Attribute\Option;
 
 use Illuminate\Support\Arr;
 use Illuminate\Database\Eloquent\Collection as BaseCollection;
+use function GuzzleHttp\Psr7\_parse_request_uri;
 
 class Collection extends BaseCollection
 {
@@ -19,4 +20,21 @@ class Collection extends BaseCollection
             return $result;
         }, array());
     }
+
+    public function toOptionDetails()
+    {
+        $details=[];
+        foreach ($this->items as $item){
+            $details[] = [
+                'value' => $item->value,
+                'label' => $item->label,
+                'sort_order' => $item->sort_order,
+            ];
+        }
+        if (count($details)>0){
+            return $details;
+        }
+        return null;
+    }
+
 }

@@ -341,6 +341,19 @@ class Attribute extends Model
     }
 
     /**
+     * Get All the option for the attribute.
+     *
+     * @return array
+     */
+    public function optionDetails()
+    {
+        if ($this->usesSource()) {
+            return $this->getSource()->toArray();
+        }
+        return $this->optionValues->toOptionDetails();
+    }
+
+    /**
      * Relates to the option table.
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany

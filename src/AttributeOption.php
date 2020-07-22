@@ -21,7 +21,7 @@ class AttributeOption extends Model
      * @{inheriteDoc}
      */
     protected $fillable = [
-        'attribute_id', 'label', 'value'
+        'attribute_id', 'label', 'value', 'sort_order'
     ];
     
     /**
@@ -34,12 +34,29 @@ class AttributeOption extends Model
      */
     public static function add(Attribute $attribute, array $options)
     {
+
         foreach ($options as $value => $label) {
-            $option = static::create([
-                'attribute_id' => $attribute->attribute_id,
-                'label' => $label,
-                'value' => $value
-            ]);
+            if (is_array($label)){
+                $customOptions = $label; // convert to be easier to read
+                if (array_key_exists('label', $customOptions) &&
+                    array_key_exists('value', $customOptions)) // only continue if we have the min required
+                {
+                    $option = static::create([
+                        'attribute_id' => $attribute->attribute_id,
+                        'label' => $customOptions['label'],
+                        'value' => $customOptions['value'],
+                        'sort_order' => $customOptions['sort_order'] ?? 0,
+                    ]);
+                }
+            }else{
+                $option = static::create([
+                    'attribute_id' => $attribute->attribute_id,
+                    'label' => $label,
+                    'value' => $value,
+                    'sort_order' => 0,
+                ]);
+            }
+
         }
     }
 
