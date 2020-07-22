@@ -94,6 +94,18 @@ Route::post('/entities/{entityCode}/attributes/map', [ 'as' => 'attribute.map', 
 
 /*
 |--------------------------------------------------------------------------
+| Attribute Values Routes
+|--------------------------------------------------------------------------
+|
+*/
+
+Route::get('/{entityCode}/{id}/attributes/values', [ 'as' => 'attribute.values.list', 'uses' => 'AttributeValueController@list']);
+
+Route::get('/{entityCode}/{id}/attributes/values/{attrCode}', [ 'as' => 'attribute.get.value', 'uses' => 'AttributeValueController@get']);
+
+
+/*
+|--------------------------------------------------------------------------
 | Attribute Options Routes
 |--------------------------------------------------------------------------
 |
