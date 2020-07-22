@@ -17,10 +17,11 @@ class CreateAttributeOptionsTable extends Migration
             $table->integer('attribute_id')->unsigned();
             $table->string('label');
             $table->string('value');
-            
+            $table->integer('sort_order')->unsigned()->default(0);
             $table->foreign('attribute_id')
                   ->references('attribute_id')->on('attributes')
                   ->onDelete('cascade');
+            $table->unique(['attribute_id', 'value']);
         });
     }
 
