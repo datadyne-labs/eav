@@ -15,12 +15,11 @@ class EntityValue extends Resource
     public function toArray($request)
     {
 
-        $the_deets = ['type' => $this->entityCode(),
+        return [
+            'type'          => $this->entityCode(),
             'id'            => (string) $this->getKey(),
             'owner'         => $this->owner,
-            'attributes'    => $this->getAttributes()];
-        return [
-            $the_deets
+            'attributes'    => $this->getAttributes()
         ];
     }
 
