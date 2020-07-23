@@ -99,11 +99,26 @@ Route::post('/entities/{entityCode}/attributes/map', [ 'as' => 'attribute.map', 
 |
 */
 
-Route::get('/{entityCode}/attributes/values', [ 'as' => 'attribute.values.list', 'uses' => 'EntityAttributeValuesController@list']);
+// Single record all attributes
+Route::get('/{entityCode}/{id}/attributes/values',      [ 'as' => 'entity.attribute.values.list',   'uses' => 'EntityAttributeValuesController@list']);
 
-Route::get('/{entityCode}/{id}/attributes/values', [ 'as' => 'attribute.values.list', 'uses' => 'EntityAttributeValueController@list']);
+Route::post('/{entityCode}/attributes/values',          [ 'as' => 'entity.attribute.values.create', 'uses' => 'EntityAttributeValuesController@create']);
 
-Route::get('/{entityCode}/{id}/attributes/values/{attrCode}', [ 'as' => 'attribute.get.value', 'uses' => 'EntityAttributeValueController@get']);
+Route::delete('/{entityCode}/{id}/attributes/values',   [ 'as' => 'entity.attribute.values.delete', 'uses' => 'EntityAttributeValuesController@remove']);
+
+Route::put('/{entityCode}/{id}/attributes/values',      [ 'as' => 'entity.attribute.values.update', 'uses' => 'EntityAttributeValuesController@update']);
+
+// Single record single attribute
+Route::get('/{entityCode}/{id}/attributes/{attrCode}',  [ 'as' => 'entity.attribute.value.get',     'uses' => 'EntityAttributeValueController@get']);
+
+Route::post('/{entityCode}/attributes/{attrCode}',      [ 'as' => 'entity.attribute.value.create',  'uses' => 'EntityAttributeValueController@create']);
+
+Route::delete('/{entityCode}/{id}/attributes/{attrCode}', [ 'as' => 'entity.attribute.value.delete', 'uses' => 'EntityAttributeValueController@remove']);
+
+Route::put('/{entityCode}/{id}/attributes/{attrCode}',  [ 'as' => 'entity.attribute.value.update',  'uses' => 'EntityAttributeValueController@update']);
+
+// Multiple records all attributes
+Route::get('/{entityCode}/attributes/values',           [ 'as' => 'entities.attribute.values.list', 'uses' => 'EntitiesAttributeValuesController@list']);
 
 
 /*

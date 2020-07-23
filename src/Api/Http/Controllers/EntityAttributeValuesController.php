@@ -4,6 +4,9 @@ namespace Eav\Api\Http\Controllers;
 
 use ApiHelper\Http\Resources\Json\Resource;
 use ApiHelper\Http\Resources\Json\ResourceCollection;
+use App\Laravue\JsonResponse;
+use Faker\Factory;
+use Faker\Generator as Faker;
 use Eav\Api\Http\Resources\AttributeCollection;
 use Eav\Api\Http\Resources\AttributeValue;
 use Eav\Api\Http\Resources\EntityCollection;
@@ -22,11 +25,11 @@ use Illuminate\Validation\ValidationException;
 class EntityAttributeValuesController extends Controller
 {
 
-    public function list(Request $request, $entityCode)
+    public function list(Request $request, $entityCode, $id)
     {
         $entity = $this->getEntity($entityCode);
         $class = $entity->entity_class;
-        $model = $class::select(['attr.*'])->with('owner');
+        $model = $class::select(['attr.*'])->with('owner')->where('id',$id)->first();
         if ($model === null){
             throw new HttpResponseException((new Error([
                 'code' => '101',
@@ -37,8 +40,8 @@ class EntityAttributeValuesController extends Controller
         }
         
 //        $attributeValues = $model->select(['attr.*'])
-        $collection = new EntityValueCollection($this->paginate($model));
-        $collection->additional(['meta' => ['attributes' => new AttributeCollection($entity->attributes)]]);
+        $collection = new Resource($model);
+//        $collection->additional(['meta' => ['attributes' => new AttributeCollection($entity->attributes)]]);
         return $collection;
     }
 
@@ -62,19 +65,44 @@ class EntityAttributeValuesController extends Controller
         return new AttributeValue($attributeValues);
     }
 
-    public function create(Request $request, $code)
+    public function create(Request $request, $entityCode)
     {
       //
+        $faker = Factory::create();
+
+        $entity = $this->getEntity($entityCode);
+        $class = $entity->entity_class;
+        return new Resource($class::create([
+            'first_name'                    => $faker->firstName,
+            'email'                         => $faker->unique()->safeEmail,
+            'last_name'                     => $faker->lastName,
+            'lead_status'                   => $faker->randomElement([1,2,3]),
+            'new'                           => $faker->boolean,
+            'investable_assets'             => $faker->randomFloat(2,10000,1000000000),
+            'birthday'                      => $faker->dateTimeBetween(),
+            'notes'                         => $faker->realText(50),
+            'phone'                         => "({$faker->randomNumber(3,true)}) {$faker->randomNumber(3,true)}-{$faker->randomNumber(4,true)}",
+        ]));
+
     }
 
-    public function update(Request $request, $code, $id)
+    public function update(Request $request, $entityCode, $id)
     {
-       //
+        $entity = $this->getEntity($entityCode);
+        $class = $entity->entity_class;
+        $model = $class::where('id',$id)->first();
+        // TODO handle options
+        $model->fill($request->all())->save();
+        return new Resource($model);
     }
 
-    public function remove(Request $request, $code, $id)
+    public function remove(Request $request, $entityCode, $id)
     {
-        //
+        $entity = $this->getEntity($entityCode);
+        $class = $entity->entity_class;
+        $model = $class::where('id',$id)->first();
+        $model->delete();
+        return new JsonResponse(200);
     }
 
 }

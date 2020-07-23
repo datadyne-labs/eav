@@ -3,10 +3,12 @@
 namespace Eav;
 
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use ReflectionException;
 use Eav\Attribute\Concerns;
 use Eav\Attribute\Collection;
 use Illuminate\Database\Eloquent\Model;
+
 
 class Attribute extends Model
 {
