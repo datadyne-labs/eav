@@ -35,10 +35,11 @@ class EntitiesAttributeValuesController extends Controller
             ]))->response()
                 ->setStatusCode(404));
         }
-        
-//        $attributeValues = $model->select(['attr.*'])
+
+        $attributes = new AttributeCollection($entity->attributes);
+        $attributes = $attributes->toArray($request);
         $collection = new EntityValueCollection($this->paginate($model));
-        $collection->additional(['meta' => ['attributes' => new AttributeCollection($entity->attributes)]]);
+        $collection->additional(['meta' => ['attributes' => $attributes['data'] ]]);
         return $collection;
     }
 
